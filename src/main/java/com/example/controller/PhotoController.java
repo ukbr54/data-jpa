@@ -4,8 +4,10 @@ import com.example.dto.PhotoDto;
 import com.example.entity.Photos;
 import com.example.exception.ResourceNotFoundException;
 import com.example.mapper.PhotoMapper;
+import com.example.projection.PhotoLikes;
 import com.example.respository.PhotosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,5 +42,11 @@ public class PhotoController {
         List<Photos> photos = photosRepository.findByUsers_Id(userId);
         List<PhotoDto> photoDto = photos.stream().map(photo -> PhotoMapper.mapPhotosToPhotosDto(photo, new PhotoDto())).collect(Collectors.toCollection(ArrayList::new));
         return ResponseEntity.status(HttpStatus.OK).body(photoDto);
+    }
+
+    @GetMapping("/photos/most-liked")
+    public ResponseEntity<PhotoLikes> getPhotosWhichGetMostLiked(){
+        PhotoLikes photoLikes = photosRepository.findPhotoWhoGetMostLike(Limit.of(1));
+        return ResponseEntity.status(HttpStatus.OK).body(photoLikes);
     }
 }

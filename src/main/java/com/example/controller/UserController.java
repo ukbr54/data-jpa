@@ -6,6 +6,7 @@ import com.example.entity.Users;
 import com.example.exception.ResourceNotFoundException;
 import com.example.mapper.PhotoMapper;
 import com.example.mapper.UserMapper;
+import com.example.projection.UserInfo;
 import com.example.respository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -54,5 +54,11 @@ public class UserController {
         List<PhotoDto> photoDto = users.getPhotos().stream().map(photo -> PhotoMapper.mapPhotosToPhotosDto(photo, new PhotoDto())).toList();
         userDto.getPhotos().addAll(photoDto);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @GetMapping("/never/post/photo")
+    public ResponseEntity<List<UserInfo>> getUsersWhoNeverPostedPhoto(){
+        List<UserInfo> users = userRepository.findByUsersNeverPostedPhoto();
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 }

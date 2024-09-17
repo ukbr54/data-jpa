@@ -21,10 +21,16 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true,nullable = false)
     private String username;
+
     @OneToMany(mappedBy = "users",fetch = FetchType.LAZY)
     private Set<Photos> photos = new HashSet<>();
+
+    @OneToMany(mappedBy = "users",fetch = FetchType.LAZY)
+    private Set<Likes> likes = new HashSet<>();
+
     private LocalDateTime createdAt;
 
     /**
