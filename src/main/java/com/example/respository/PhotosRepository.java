@@ -1,6 +1,7 @@
 package com.example.respository;
 
 import com.example.entity.Photos;
+import com.example.projection.AveragePhotoPerUser;
 import com.example.projection.PhotoLikes;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,4 +26,7 @@ public interface PhotosRepository extends JpaRepository<Photos,Long> {
      */
     @Query("SELECT new com.example.projection.PhotoLikes(p.id,u.username,p.imageUrl,COUNT(p) as total) FROM Photos p JOIN p.likes l JOIN p.users u GROUP BY p.id ORDER BY total DESC")
     PhotoLikes findPhotoWhoGetMostLike(Limit limit);
+
+    @Query(value = "SELECT (SELECT COUNT(*) FROM Photos) / (SELECT COUNT(*) FROM Users) as avg",nativeQuery = true)
+    AveragePhotoPerUser calculateAveragePhotoPerUser();
 }

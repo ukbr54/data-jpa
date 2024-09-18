@@ -4,6 +4,7 @@ import com.example.dto.PhotoDto;
 import com.example.entity.Photos;
 import com.example.exception.ResourceNotFoundException;
 import com.example.mapper.PhotoMapper;
+import com.example.projection.AveragePhotoPerUser;
 import com.example.projection.PhotoLikes;
 import com.example.respository.PhotosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,11 @@ public class PhotoController {
     public ResponseEntity<PhotoLikes> getPhotosWhichGetMostLiked(){
         PhotoLikes photoLikes = photosRepository.findPhotoWhoGetMostLike(Limit.of(1));
         return ResponseEntity.status(HttpStatus.OK).body(photoLikes);
+    }
+
+    @GetMapping("/avg-photo-per-user")
+    public ResponseEntity<AveragePhotoPerUser> calculateAveragePhotoPerUser(){
+        AveragePhotoPerUser averagePhotoPerUser = photosRepository.calculateAveragePhotoPerUser();
+        return ResponseEntity.status(HttpStatus.OK).body(averagePhotoPerUser);
     }
 }
