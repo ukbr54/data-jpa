@@ -31,5 +31,12 @@ public class Photos {
     @OneToMany(mappedBy = "photos",fetch = FetchType.LAZY)
     private Set<Likes> likes = new HashSet<>();
 
+    /*@ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "photo_tags",
+            joinColumns = @JoinColumn(name = "photo_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();*/
+
     private LocalDateTime createdAt;
 }
